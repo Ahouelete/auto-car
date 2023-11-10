@@ -1,0 +1,89 @@
+<div class="container-list-users">
+  <p><i class="fa fa-cart-plus"></i> GESTION DES VOITURES</p>
+  <div class="list-user">
+    <div class="header">
+      <span>Liste des voitures</span>
+      <span>Consulter/Supprimer une voiture</span>
+    </div>
+    <div class="filter-orders">
+      <div class="">
+        <a
+          [ngClass]="{ 'link-active': statut_car == 'TOUS' }"
+          (click)="filterCar('TOUS')"
+          >Toutes les voitures</a
+        >
+        <a
+          [ngClass]="{ 'link-active': statut_car == 'SELLED' }"
+          (click)="filterCar('SELLED')"
+          >Voitures vendues</a
+        >
+        <a
+          [ngClass]="{ 'link-active': statut_car == 'NOT_SELLED' }"
+          (click)="filterCar('NOT_SELLED')"
+          >Voitures non vendues</a
+        >
+      </div>
+    </div>
+    <p-table [value]="cars" responsiveLayout="scroll" [loading]="loading">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Modèle</th>
+          <th>Fabriquer par</th>
+          <th>Année de fabrication</th>
+          <th>Carrosseries</th>
+          <th>Couleur</th>
+          <th>Puissance moteur</th>
+          <th>Propriétaire</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-car>
+        <tr>
+          <td>{{ car?.vehiculeModel?.model }}</td>
+          <td>{{ car?.vehiculeModel?.make }}</td>
+          <td>{{ car?.vehiculeModel?.year }}</td>
+          <td>{{ car?.carBody?.body }}</td>
+          <td>{{ car?.color?.color }}</td>
+          <td>{{ car?.enginePower?.power }}</td>
+          <td>
+            {{
+              car?.user?.person?.lastName + " " + car?.user?.person?.firstName
+            }}
+          </td>
+          <td>
+            <span
+              [ngClass]="{
+                'card-error': !car.sell,
+                'card-success': car.sell
+              }"
+              >{{ car.sell ? "VENDUE" : "NON VENDUE" }}</span
+            >
+          </td>
+          <td>
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-rounded p-button-outlined p-button-success"
+              icon="fa fa-pencil"
+              (click)="onView(car)"
+            ></button>
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-rounded p-button-outlined p-button-danger"
+              icon="fa fa-trash"
+              (click)="onCancel(car)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-paginator
+      [rows]="pageSize"
+      [totalRecords]="totalRecords"
+      [rowsPerPageOptions]="[10, 20, 30]"
+      (onPageChange)="paginate($event)"
+    ></p-paginator>
+  </div>
+</div>

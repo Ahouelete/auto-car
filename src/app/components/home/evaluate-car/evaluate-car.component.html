@@ -1,0 +1,232 @@
+<div class="container-evaluate-car">
+  <div class="evaluate-car-form">
+    <h2>
+      Renseignez les champs ci-dessous pour évaluer le prix de votre véhicule
+    </h2>
+
+    <div class="evaluate-car-inputs">
+      <form [formGroup]="evaluateCarForm">
+        <div class="row">
+          <!-- productionYear -->
+          <div class="col-md-2 col-sm-4 col-12">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Année de fabrication</mat-label>
+              <input
+                matInput
+                placeholder="Année de fabrication"
+                formControlName="productionYear"
+                type="number"
+                min="1000"
+              />
+            </mat-form-field>
+          </div>
+
+          <!-- vehiculeModel -->
+          <div class="col-md-4 col-sm-8 col-12">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Modèle</mat-label>
+              <mat-select
+                [compareWith]="compareFn"
+                formControlName="vehiculeModel"
+              >
+                <mat-option
+                  *ngFor="let model of modelsVehicule"
+                  [value]="model"
+                  >{{ model.model }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- enginePower-->
+          <div class="col-md-4 col-sm-8 col-12">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Puissance</mat-label>
+              <mat-select
+                [compareWith]="compareFn"
+                formControlName="enginePower"
+              >
+                <mat-option
+                  *ngFor="let enginePower of enginePowers"
+                  [value]="enginePower"
+                  >{{ enginePower.power }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- numberOfKilometerUsed -->
+          <div class="col-md-2 col-sm-4 col-12">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Nombre de Kilomètres (Km)</mat-label>
+              <input
+                formControlName="numberOfKilometerUsed"
+                matInput
+                placeholder="Nombre de Kilomètres"
+                type="number"
+                min="0"
+              />
+            </mat-form-field>
+          </div>
+
+          <!-- numberOfDoor -->
+          <div class="col-md-2 col-sm-6 col-12">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Nombre de portes</mat-label>
+              <input
+                formControlName="numberOfDoor"
+                matInput
+                placeholder="Nombre de portes"
+                type="number"
+                min="1"
+              />
+            </mat-form-field>
+          </div>
+
+          <!-- numberOfKey -->
+          <div class="col-md-2 col-sm-6 col-12">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Nombre de Clés </mat-label>
+              <input
+                formControlName="numberOfKey"
+                matInput
+                placeholder="Nombre de clés"
+                type="number"
+                min="1"
+              />
+            </mat-form-field>
+          </div>
+
+          <!-- carBody -->
+          <div class="col-md-4 col-sm-6 col-12">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Carrosserie</mat-label>
+              <mat-select [compareWith]="compareFn" formControlName="carBody">
+                <mat-option
+                  *ngFor="let carBody of carsBody"
+                  [value]="carBody"
+                  >{{ carBody.body }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Car Color -->
+          <div class="col-md-4 col-sm-6 col-12">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Couleur Carrosserie</mat-label>
+              <mat-select [compareWith]="compareFn" formControlName="carColor">
+                <mat-option
+                  *ngFor="let carColor of carsColor"
+                  [value]="carColor"
+                  >{{ carColor.color }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- isfuel -->
+          <div class="col-md-4 col-12">
+            <mat-checkbox class="" formControlName="isfuel"
+              >Véhicule à caburant ?</mat-checkbox
+            >
+          </div>
+
+          <!-- technicalVisitCheck -->
+          <div class="col-md-4 col-12">
+            <mat-checkbox class="" formControlName="technicalVisitCheck"
+              >Visite technique à jour ?</mat-checkbox
+            >
+          </div>
+
+          <!-- vehiculeInsurance -->
+          <div class="col-md-4 col-12">
+            <mat-checkbox class="" formControlName="vehiculeInsurance"
+              >Assurance à jour ?</mat-checkbox
+            >
+          </div>
+        </div>
+
+        <div class="row m-t-30">
+          <div class="col-md-6 col-12">
+            <button
+              pButton
+              pRipple
+              label="Réinitialiser"
+              (click)="resetEvaluateCarForm()"
+              class="p-button p-button-danger col-12 p-button-outlined p-button-rounded"
+            ></button>
+          </div>
+
+          <div class="col-md-6 col-12">
+            <button
+              pButton
+              pRipple
+              class="p-button p-button-success col-12 p-button-rounded"
+              (click)="evaluateCar(evaluateCarForm.value)"
+              [disabled]="!evaluateCarForm.valid"
+            >
+              <div class="display-block">
+                <span *ngIf="!evaluateResponseApi?.isLoading"
+                  >Evaluer ce véhicule</span
+                >
+                <div
+                  class="spinner-border text-light"
+                  role="status"
+                  *ngIf="evaluateResponseApi?.isLoading"
+                ></div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Result evaluate Car after submit -->
+  <div
+    class="result-evaluate-car"
+    *ngIf="evaluateResponseApi && evaluateResponseApi?.message != ''"
+  >
+    <div
+      class="alert alert-{{ evaluateResponseApi.success ? 'info' : 'danger' }}"
+      role="alert"
+    >
+      <h2 class="text-center">
+        <i
+          class="fa fa-{{
+            evaluateResponseApi.success ? 'check-circle-o' : 'error-circle'
+          }}"
+        >
+        </i>
+        {{
+          evaluateResponseApi.success
+            ? "Votre véhicule a été évalué avec succès par notre Systèm"
+            : "Le système a rencontré une erreur!"
+        }}
+      </h2>
+
+      <h3 *ngIf="!evaluateResponseApi.success">
+        {{ evaluateResponseApi.message }}
+      </h3>
+
+      <p *ngIf="evaluateResponseApi.success">
+        Ce véhicule coûterait à la vente :
+        <span>FCFA {{ arrondi(evaluateResponseApi.object) }} </span>
+      </p>
+
+      <h4 *ngIf="evaluateResponseApi.success" class="text-center">
+        Ce prix a été déterminé après évaluation des caractéristiques et de
+        l'état actuel du véhicule.
+      </h4>
+
+      <button
+        *ngIf="evaluateResponseApi.success"
+        pButton
+        pRipple
+        label="Je souhaite le vendre"
+        class="p-button p-button-danger col-12 p-button-rounded p-button-outlined"
+      ></button>
+    </div>
+  </div>
+</div>

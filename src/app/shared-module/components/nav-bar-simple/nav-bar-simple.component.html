@@ -1,0 +1,72 @@
+<div class="menu-custom-component">
+  <div class="logo">
+    <img src="assets/pictures/logo.avif" alt="" width="100" height="80" />
+  </div>
+  <div class="icon-menu-mobile">
+    <i class="fa fa-bars" (click)="toogleMobileMenu()"></i>
+  </div>
+  <nav class="custom-menu-mobile-overlay">
+    <ul class="menu" id="menu">
+      <li class="menu-item">
+        <a [ngClass]="{ 'link-active': urlFragment == 'home' }" href="/home"
+          >ACCUEIL</a
+        >
+      </li>
+      <li class="menu-item">
+        <a
+          [ngClass]="{ 'link-active': urlFragment == 'our-service' }"
+          (click)="goToUrl('/home#our-service')"
+          >NOS SERVICES</a
+        >
+      </li>
+      <li class="menu-item">
+        <a
+          [ngClass]="{ 'link-active': urlFragment == 'all-car-to-sell' }"
+          (click)="goToUrl('/home#all-car-to-sell')"
+          >VEHICULES EN VENTE</a
+        >
+      </li>
+      <li class="menu-item">
+        <a
+          [ngClass]="{ 'link-active': urlFragment == 'evaluate-car' }"
+          (click)="goToUrl('/home#evaluate-car')"
+          >EVALUER UN VEHICULE</a
+        >
+      </li>
+      <li
+        class="menu-item"
+        *ngIf="currentUser && rolesUser.includes('ROLE_CUSTOMER')"
+      >
+        <a
+          routerLink="/user-account/user-dashboard"
+          routerLinkActive="link-active"
+          >DASHBOARD</a
+        >
+      </li>
+      <li
+        class="menu-item"
+        *ngIf="currentUser && rolesUser.includes('ROLE_ADMIN')"
+      >
+        <a routerLink="/back-office" routerLinkActive="link-active"
+          >PARAMETRES</a
+        >
+      </li>
+
+      <li class="menu-item" *ngIf="!currentUser">
+        <a routerLink="/login" routerLinkActive="link-active">SE CONNECTER</a>
+      </li>
+      <!-- <li class="" id="login" *ngIf="!currentUser">
+        <a routerLink="/login">SE CONNECTER</a>
+      </li> -->
+
+      <li class="" id="logout" *ngIf="currentUser">
+        <a (click)="logOut()">DECONNEXION</a>
+      </li>
+
+      <app-panier [quantity]="quantity"></app-panier>
+    </ul>
+    <div class="close-menu-mobile-icon">
+      <a (click)="toogleMobileMenu()"><i class="fa fa-close"></i></a>
+    </div>
+  </nav>
+</div>

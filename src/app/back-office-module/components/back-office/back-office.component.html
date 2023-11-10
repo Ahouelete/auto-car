@@ -1,0 +1,64 @@
+<div class="back-office-page">
+  <app-nav-bar-simple></app-nav-bar-simple>
+  <div class="container-layout-back-office">
+    <div class="side-menu">
+      <a routerLink="/back-office/list-car" routerLinkActive="link-active">
+        <i class="fa fa-car"> </i>Liste des voitures</a
+      >
+      <a
+        routerLink="/back-office/list-vehicule-model"
+        routerLinkActive="link-active"
+      >
+        <i class="fa fa-beer"> </i>Liste des modèles de voitures</a
+      >
+      <a
+        routerLink="/back-office/list-engine-power"
+        routerLinkActive="link-active"
+      >
+        <i class="fa fa-beer"> </i>Liste des moteurs</a
+      >
+      <a
+        routerLink="/back-office/list-car-color"
+        routerLinkActive="link-active"
+      >
+        <i class="fa fa-beer"> </i>Liste des couleurs de voitures</a
+      >
+      <a routerLink="/back-office/list-car-body" routerLinkActive="link-active">
+        <i class="fa fa-beer"> </i>Liste des carrosseries</a
+      >
+
+      <a routerLink="/back-office/list-payment" routerLinkActive="link-active">
+        <i class="fa fa-credit-card"> </i> Liste des paiements</a
+      >
+      <a routerLink="/back-office/list-user" routerLinkActive="link-active">
+        <i class="fa fa-users"> </i> Liste des utilisateurs</a
+      >
+    </div>
+    <div class="container-feature">
+      <app-list-vehicule-model
+        *ngIf="routeActivated == 'list-vehicule-model'"
+      ></app-list-vehicule-model>
+
+      <app-list-car-body
+        *ngIf="routeActivated == 'list-car-body'"
+      ></app-list-car-body>
+
+      <app-list-car-color
+        *ngIf="routeActivated == 'list-car-color'"
+      ></app-list-car-color>
+
+      <app-list-engine-power
+        *ngIf="routeActivated == 'list-engine-power'"
+      ></app-list-engine-power>
+
+      <app-list-car *ngIf="routeActivated == 'list-car'"></app-list-car>
+
+      <app-list-payment
+        *ngIf="routeActivated == 'list-payment'"
+      ></app-list-payment>
+
+      <app-list-users *ngIf="routeActivated == 'list-user'"></app-list-users>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

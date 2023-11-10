@@ -1,0 +1,325 @@
+<div class="home-page">
+  <app-nav-bar-simple [quantity]="quantityPanier"></app-nav-bar-simple>
+  <div class="feature-home-page">
+    <!-- Bandeau d'accueil -->
+    <div class="home-banner">
+      <img
+        src="assets/pictures/Home_header1.webp"
+        alt=""
+        width="100%"
+        height="100%"
+      />
+
+      <div class="content">
+        <p>
+          Nous sommes des professionnels dans la vente des véhicules d'occasions
+        </p>
+
+        <span>Votre satisfaction est notre priorité!</span>
+      </div>
+    </div>
+
+    <!-- notre vision -->
+
+    <div class="vision-presentation" id="our-service">
+      <div class="anim">
+        <p>Nos services</p>
+        <p class="vision-presentation-header">
+          Dans le but de faciliter la vente ou l'achat de tout vehicule
+          d'occasions, nous offrons a nos clients les meilleurs services nulle
+          part ailleurs. Evaluer, acheter ou vendez un véhicule d'occasion aux
+          prix juste sur notre plate-forme AUTOCAR.
+        </p>
+
+        <div class="list-providers-car">
+          <div class="evaluate-car" (click)="scrollToEvaluateCar()">
+            <h2 class="evaluate-car-header">Evaluer un véhicule</h2>
+            <i class="fa fa-cog"></i>
+            <h4 class="evaluate-car-content">
+              Profitez de notre plate-forme pour évaluer votre véhicule!
+              Renseignez les caractéristiques du véhicule, et le système se
+              chargera de vous évaluer votre véhicule. Cette évaluation exacte.
+            </h4>
+          </div>
+
+          <div class="evaluate-car" (click)="scrollToAllCarToSell()">
+            <h2 class="evaluate-car-header">Acheter un véhicule</h2>
+            <i class="fa fa-cart-plus"></i>
+            <h4 class="evaluate-car-content">
+              Il vous suffit de nous contacter via nos différents canaux afin de
+              nous soumettre votre commande. Notre équipe s’activera pour vous
+              faire des propositions dans les plus brefs délais.
+            </h4>
+          </div>
+
+          <div class="evaluate-car" (click)="scrollToEvaluateCar()">
+            <h2 class="evaluate-car-header">Vendre un véhicule</h2>
+            <i class="fa fa-car"></i>
+            <h4 class="evaluate-car-content">
+              Confiez-nous la vente de votre(vos) véhicule(s) et profitez d’un
+              circuit plus court et direct.Nous venons à votre rencontre pour
+              l’évaluation du véhicule et la prise de photos et vidéo (si
+              possible).
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- container decouvrez les vehicules en vente -->
+
+    <div class="container-decouvrer-nos-menus" id="all-car-to-sell">
+      <div class="anim">
+        <p>
+          <span>Découvrez les véhicules en vente</span>
+          <span
+            >Toutes les catégories sont disponibles. Faites votre choix
+          </span>
+        </p>
+
+        <div class="filter-and-content-panier">
+          <div class="filter">
+            <i class="fa fa-sliders"></i>
+            <a id="nos-boissons">Toutes catégories</a>
+          </div>
+          <div class="content-panier">
+            <app-panier [quantity]="quantityPanier"></app-panier>
+            <div class="amount-panier">
+              <span>Montant : </span>
+              <span>{{ formatNumber(amountPanier) }} XOF</span>
+            </div>
+            <button
+              class="btn-payment-panier"
+              routerLink="/payment"
+              *ngIf="quantityPanier > 0"
+            >
+              PAYER
+            </button>
+          </div>
+        </div>
+
+        <div class="menus-du-jour">
+          <div class="card">
+            <p-carousel
+              [value]="cars"
+              [numVisible]="3"
+              [numScroll]="3"
+              [circular]="true"
+              [responsiveOptions]="responsiveOptions"
+            >
+              <ng-template let-car pTemplate="item">
+                <div class="product-item">
+                  <div class="product-item-content">
+                    <div class="mb-3">
+                      <img
+                        style="
+                          min-width: 150px;
+                          min-height: 100px;
+                          width: 22vw;
+                          height: 17vw;
+                        "
+                        src="{{ car.images[0].fileName }}"
+                        alt="{{ car.vehiculeModel.make }}  {{
+                          car.vehiculeModel.model
+                        }} "
+                        class="product-image"
+                      />
+                    </div>
+                    <div>
+                      <h4 class="mb-1 car-name-details">
+                        {{ car.vehiculeModel.make }}
+                        {{ car.vehiculeModel.model }}
+                        {{ car.vehiculeModel.year }}, PW :
+                        {{ car.enginePower.power }}
+                      </h4>
+                      <h5 class="mb-1 car-engine-details">
+                        {{ car.carBody.body }} {{ car.color.color }}
+                      </h5>
+                      <h6 class="mt-0 mb-3 car-amount-details">
+                        {{ "FCFA " + arrondi(car.systemAmount) }}
+                      </h6>
+                      <div class="car-buttons mt-5">
+                        <button
+                          pRipple
+                          pButton
+                          (click)="onViewCar(car)"
+                          class="p-button p-button-secondary p-button-rounded mr-2"
+                          icon="fa fa-picture-o"
+                        ></button>
+                        <button
+                          (click)="addNewProductToPanier(car, 'CAR')"
+                          pRipple
+                          pButton
+                          class="p-button-success p-button-rounded mr-2"
+                          icon="fa fa-cart-plus"
+                        ></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </p-carousel>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- container similer le prix du vehicule -->
+
+    <div class="container-decouvrer-nos-menus">
+      <div class="anim" id="evaluate-car">
+        <p>
+          <span>Evaluez votre véhicule</span>
+          <span>Ayez une idée sur le prix de votre véhicule</span>
+        </p>
+        <app-evaluate-car></app-evaluate-car>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
+
+<p-dialog
+  class="no-header"
+  header="AJOUTER AU PANIER"
+  [(visible)]="displayBasic"
+  [style]="{ minWidth: '300px', width: '30vw' }"
+  *ngIf="newProductToPanier"
+>
+  <div class="container-panier">
+    <div class="header">
+      <span> <i class="fa fa-cart-plus"></i>AJOUTER AU PANIER</span>
+    </div>
+
+    <div class="detail-product">
+      <span class="product-name"
+        >{{ newProductToPanier.product?.vehiculeModel.make }}
+        {{ newProductToPanier.product?.vehiculeModel.model }}
+        {{ newProductToPanier.product?.vehiculeModel.year }}</span
+      >
+      <span class="product-price"
+        >{{ arrondi(newProductToPanier.product?.systemAmount) }} XOF</span
+      >
+    </div>
+
+    <div class="panier-form">
+      <form [formGroup]="panierForm">
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Quantité</mat-label>
+              <input
+                formControlName="quantity"
+                matInput
+                placeholder="Quantité"
+                value="1"
+                type="number"
+                min="1"
+                max="1"
+                (ngModelChange)="
+                  changeQuantity(newProductToPanier.product?.systemAmount)
+                "
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-6">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Montant</mat-label>
+              <input matInput placeholder="Montant" formControlName="amount" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-success col-12 m-b-10 p-button-outlined"
+              label="AJOUTER ET QUITTER"
+              [disabled]="!panierForm.valid"
+              (click)="addProductInPanier(panierForm.value, 'CANCEL')"
+            ></button>
+          </div>
+          <div class="col-12">
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-success col-12 m-b-10"
+              label="AJOUTER ET PROCEDER AU PAIEMENT"
+              [disabled]="!panierForm.valid"
+              (click)="addProductInPanier(panierForm.value, 'PAYMENT')"
+            ></button>
+          </div>
+          <div class="col-12">
+            <button
+              (click)="displayBasic = false"
+              pRipple
+              pButton
+              class="p-button p-button-danger col-12"
+              label="QUITTER"
+            ></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</p-dialog>
+
+<!-- DIALOG VIEW CAR -->
+<p-dialog
+  class="no-header"
+  header="DETAILS VOITURE"
+  [(visible)]="displayBasicViewCar"
+  [style]="{ minWidth: '300px', width: '35vw' }"
+>
+  <!-- <div class="row m-t-15">
+    <h4 class="mb-1 car-name-details">Mazda</h4>
+    <h5 class="mb-1 car-engine-details">Mazda ee</h5>
+    <h6 class="mt-0 mb-3 car-amount-details">12000</h6>
+  </div> -->
+  <div class="row m-t-15"></div>
+  <p-galleria
+    class="m-t-15"
+    [value]="imagesCar"
+    [responsiveOptions]="responsiveOptions"
+    [containerStyle]="{ 'max-width': '100%' }"
+    [numVisible]="2"
+    [circular]="true"
+  >
+    <ng-template pTemplate="item" let-item>
+      <img
+        [src]="item.fileName"
+        style="width: 32vw; height: 26vw; display: block"
+      />
+    </ng-template>
+    <ng-template pTemplate="thumbnail" let-item>
+      <div class="grid grid-nogutter justify-content-center">
+        <img
+          [src]="item.fileName"
+          style="display: block; width: 5vw; height: 4vw"
+        />
+      </div>
+    </ng-template>
+  </p-galleria>
+
+  <div class="row m-t-30">
+    <div class="col-6">
+      <button
+        pRipple
+        pButton
+        label="BACK"
+        (click)="displayBasicViewCar = false"
+        class="p-button p-button-rounded p-button-secondary p-button-outlined col-12"
+      ></button>
+    </div>
+    <div class="col-6">
+      <button
+        pRipple
+        pButton
+        label="BUY"
+        icon="fa fa-cart-plus"
+        class="p-button p-button-rounded p-button-success col-12"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

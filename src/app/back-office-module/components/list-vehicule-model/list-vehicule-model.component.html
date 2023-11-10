@@ -1,0 +1,126 @@
+<div class="container-list-users">
+  <p><i class="fa fa-beer"></i> GESTION DES MODELES DE VOITURES</p>
+  <div class="user-form">
+    <form [formGroup]="vehiculeModelForm">
+      <div class="header">
+        <span>Enregistrer un modèle de voiture</span>
+        <span>Ajouter ou modifier un un modèle de voiture</span>
+      </div>
+      <div class="row">
+        <div class="col-md-10 col-sm-8 col-12">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Modèle</mat-label>
+            <input
+              matInput
+              placeholder="Modèle"
+              formControlName="model"
+              type="text"
+              oninput="this.value = this.value.toUpperCase()"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-2 col-sm-4 col-12">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Année de fabrication</mat-label>
+            <input
+              matInput
+              placeholder="Année de fabrication"
+              formControlName="year"
+              type="number"
+              min="1000"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-12 col-12">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Fabriquer par</mat-label>
+            <input
+              matInput
+              placeholder="Fabriquer par"
+              formControlName="make"
+              type="text"
+              oninput="this.value = this.value.toUpperCase()"
+            />
+          </mat-form-field>
+        </div>
+        <div class="container-btn col-12">
+          <button
+            (click)="onCreate()"
+            pRipple
+            pButton
+            class="p-button p-button-outlined p-button-secondary"
+          >
+            Réînitialiser
+          </button>
+          <button
+            pRipple
+            pButton
+            class="p-button p-button-success"
+            (click)="onSave(vehiculeModelForm.value)"
+            [disabled]="!vehiculeModelForm.valid"
+          >
+            {{ saveButtonName }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="list-user">
+    <div class="header">
+      <span>Liste des modèles de voitures</span>
+      <span>Consulter la liste des modèles de voitures </span>
+    </div>
+    <p-table
+      [value]="vehiculeModels"
+      responsiveLayout="scroll"
+      [loading]="loading"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Modèle</th>
+          <th class="text-end">Année de fabrication</th>
+          <th class="text-end">Fabriquer par</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-vehiculeModel let-rowIndex="rowIndex">
+        <tr>
+          <td>{{ rowIndex + 1 }}</td>
+          <td class="">{{ vehiculeModel.model }}</td>
+          <td class="text-end">{{ vehiculeModel.year }}</td>
+          <td class="text-end">{{ vehiculeModel.make }}</td>
+          <td class="text-center">
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-rounded p-button-outlined p-button-success"
+              icon="fa fa-pencil"
+              (click)="onUpdate(vehiculeModel)"
+            ></button>
+            <button
+              pRipple
+              pButton
+              class="p-button p-button-rounded p-button-outlined p-button-danger"
+              icon="fa fa-trash"
+              (click)="onDelete(vehiculeModel)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+          Au total il y a {{ totalRecords }} enregistrements.
+        </div>
+      </ng-template>
+    </p-table>
+    <p-paginator
+      [rows]="pageSize"
+      [totalRecords]="totalRecords"
+      [rowsPerPageOptions]="[10, 20, 30]"
+      (onPageChange)="paginate($event)"
+    ></p-paginator>
+  </div>
+</div>
